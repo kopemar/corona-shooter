@@ -1,0 +1,24 @@
+.playground_elements {
+    border: darksalmon 1px solid;
+    width: 600px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#playground {
+    background: url("asset/world.png");
+}
+
+#game_over_box {
+    visibility: hidden;
+    position: relative;
+    top: 30%;
+    height: 20%;
+    left: 25%;
+    width: 50%;
+    padding-top: 10%;
+    color: #ffffff;
+    vertical-align: middle;
+    text-align: center;
+    background: chocolate;
+}
