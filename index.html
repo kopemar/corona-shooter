@@ -2,10 +2,11 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <title>Corona shooter</title>
 </head>
 <body>
-<div>
+<menu>
     <form>
         <input type="button" id="new_game" value="New Game">
         <input type="button" id="restart" value="Restart">
@@ -14,6 +15,19 @@
         <label for="mouse_radio">Mouse</label>
         <input type="radio" id="mouse_radio" name="input_type_radio">
     </form>
+</menu>
+<article>
+    <div id="scoreboard">
+        Score: <span id="score"></span> | Viruses eliminated: <span id="viruses_eliminated"></span> | Viruses missed:
+        <span id="viruses_missed"></span>
+    </div>
+</article>
+
+<div id="playground" class="playground_elements">
+    <div id="score_indicator" class="playground_elements">
+        <div id="game_over_box">You were not good enough to save the world!</div>
+    </div>
 </div>
+
 </body>
 </html>
