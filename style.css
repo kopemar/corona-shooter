@@ -1,5 +1,4 @@
 .playground_elements {
-    cursor: url("asset/target.png") 26 26, default;
     height: 400px;
 }
 
@@ -39,11 +38,13 @@
     opacity: 0.5;
     background: #ff5d67;
 }
+
 #cursor {
     position: absolute;
     width: 56px;
     height: 56px;
     z-index: 1;
+    visibility: hidden;
     background: url("asset/target.png");
 }
 

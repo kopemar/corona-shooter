@@ -1,4 +1,4 @@
-const restartButton = document.getElementById("restart");
+const newGameButton = document.getElementById("new_game");
 const gameOverBox = document.getElementById("game_over_box");
 const youWonBox = document.getElementById("you_won_box");
 const playground = document.getElementById("playground");
@@ -6,6 +6,7 @@ const scoreField = document.getElementById("score");
 const missedField = document.getElementById("viruses_missed");
 const eliminatedField = document.getElementById("viruses_eliminated");
 const scoreIndicator = document.getElementById("score_indicator");
+
 const cursor = document.getElementById("cursor");
 
 class Game {
@@ -16,8 +17,50 @@ class Game {
     }
 
     start() {
+        gameOverBox.style.visibility = 'hidden';
+        youWonBox.style.visibility = 'hidden';
         this.run();
         this.showNewVirus();
+
+        if (!this.player.mouse) {
+            cursor.style.visibility = 'visible';
+            document.querySelectorAll('.playground_elements').forEach((elem) => {
+                    elem.style.cursor = 'none'
+                }
+            );
+
+            const keyDownListener = {
+                handleEvent: (event) => {
+                    if (event.key === 'd') {
+                        cursor.style.left = (cursor.offsetLeft + 30) + 'px';
+                    } else if (event.key === 'w') {
+                        cursor.style.top = (cursor.offsetTop - 30) + 'px';
+                    } else if (event.key === 's') {
+                        cursor.style.top = (cursor.offsetTop + 30) + 'px';
+                    } else if (event.key === 'a') {
+                        cursor.style.left = (cursor.offsetLeft - 30) + 'px';
+                    } else if (event.key === ' ') {
+                        this.shoot()
+                    }
+                }
+            };
+
+            window.addEventListener('keydown', keyDownListener, false)
+        } else {
+            cursor.style.visibility = 'hidden';
+            document.querySelectorAll('.playground_elements').forEach((elem) => {
+                    elem.style.cursor = 'url("asset/target.png") 26 26, default'
+                }
+            );
+        }
+    }
+
+    shoot() {
+        if (cursor.offsetLeft + 26 > this.virus.offsetLeft && cursor.offsetLeft + 26 < this.virus.offsetLeft + 82) {
+            if (cursor.offsetTop + 26 > this.virus.offsetTop && cursor.offsetTop + 26 < this.virus.offsetTop + 76) {
+                this.onVirusEliminated(this.virus);
+            }
+        }
     }
 
     automaticallyAdd() {
@@ -30,23 +73,41 @@ class Game {
         }, 350);
     }
 
+    stop() {
+        let virus = this.virus;
+        try {
+            playground.removeChild(virus);
+        } catch (e) {
+            console.error(e);
+        }
+
+        clearTimeout(this.newVirusTimeout);
+        clearTimeout(this.timeout);
+        clearInterval(this.interval);
+    }
+
     showNewVirus() {
         this.virus = Virus.createNew();
 
-        let timeout = setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.onVirusMissed(this.virus);
-        }, 1000);
+        }, (this.player.mouse) ? 1000 : 2000);
 
-        this.virus.addEventListener('click', (e) => {
-            console.log(e);
-            this.onVirusEliminated(this.virus);
-            clearTimeout(timeout);
-            e.stopPropagation();
-        }, true);
+        const virusEliminatedListener = {
+            handleEvent: (event) => {
+                console.log(event);
+                this.onVirusEliminated(this.virus);
+                event.stopPropagation();
+            }
+        };
+
+        if (this.player.mouse) {
+            this.virus.addEventListener('click', virusEliminatedListener, true);
+        }
 
         this.newVirusTimeout = setTimeout(() => {
             this.showNewVirus()
-        }, 2000)
+        }, (this.player.mouse) ? 2000 : 4000)
     }
 
     onVirusMissed(virus) {
@@ -58,8 +119,8 @@ class Game {
 
     onVirusEliminated(virus) {
         this.addScore(30);
-        console.debug("ELIMINATED");
         playground.removeChild(virus);
+        clearTimeout(this.timeout);
         this.player.eliminated++;
         eliminatedField.innerText = this.player.eliminated;
     }
@@ -108,6 +169,7 @@ class Virus {
 class Map {
     constructor() {
         this.hidden = 300;
+        this.maxWidth = 600;
         scoreIndicator.style.width = `${this.hidden}px`;
     }
 
@@ -115,8 +177,8 @@ class Map {
         this.hidden -= pixels;
         if (this.hidden < 0) {
             scoreIndicator.style.width = '0px';
-        } else if (this.hidden >= scoreIndicator.style.width) {
-            scoreIndicator.style.width = `${scoreIndicator.style.width}px`;
+        } else if (this.hidden >= this.maxWidth) {
+            scoreIndicator.style.width = `${this.maxWidth}px`;
         } else {
             scoreIndicator.style.width = `${this.hidden}px`;
         }
@@ -127,15 +189,17 @@ class Map {
     }
 
     isFullyHidden() {
-        return this.hidden >= scoreIndicator.style.width;
+        return this.hidden >= this.maxWidth;
     }
 }
 
 let game;
 
-restartButton.addEventListener('click', () => {
-    game = new Game(new Player(document.querySelector('input[name="input_type_radio"]').value !== "keyboard"));
+newGameButton.addEventListener('click', (event) => {
+    if (game != null) {
+        game.stop();
+    }
+    game = new Game(new Player(document.getElementById('input_type_radios').elements['input_type_radio'].value !== "keyboard"));
     game.start();
-    game.addScore(10);
 });
 
