@@ -3,6 +3,8 @@
 }
 
 #playground {
+    cursor: url("asset/target.png") default;
+    position: relative;
     margin-left: auto;
     margin-right: auto;
     width: 600px;
@@ -10,21 +12,30 @@
 }
 
 #game_over_box {
-    visibility: hidden;
-    position: relative;
-    top: 30%;
+    visibility: collapse;
+    position: absolute;
+    top: 40%;
+    right: 25%;
     height: 20%;
-    left: 25%;
     width: 50%;
     padding-top: 10%;
     color: #ffffff;
-    vertical-align: middle;
     text-align: center;
-    background: chocolate;
+    border: solid 2px white;
+    background: #d21f43;
 }
 
 #score_indicator {
     width: 300px;
     opacity: 0.5;
     background: #ff5d67;
+}
+
+.virus {
+    width: 82px;
+    height: 77px;
+    position: absolute;
+    top: 60px;
+    right: 90px;
+    background: url("asset/virus.png");
 }
