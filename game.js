@@ -31,14 +31,32 @@ class Game {
 
             const keyDownListener = {
                 handleEvent: (event) => {
+                    const step = 30;
+                    const cursorSize = 56;
                     if (event.key === 'd') {
-                        cursor.style.left = (cursor.offsetLeft + 30) + 'px';
+                        if (cursor.offsetLeft + step < this.map.maxWidth - cursorSize) {
+                            cursor.style.left = (cursor.offsetLeft + step) + 'px';
+                        } else {
+                            cursor.style.left = this.map.maxWidth - cursorSize
+                        }
                     } else if (event.key === 'w') {
-                        cursor.style.top = (cursor.offsetTop - 30) + 'px';
+                        if (cursor.offsetTop - step > 0) {
+                            cursor.style.top = (cursor.offsetTop - step) + 'px';
+                        } else {
+                            cursor.style.top = '0px'
+                        }
                     } else if (event.key === 's') {
-                        cursor.style.top = (cursor.offsetTop + 30) + 'px';
+                        if (cursor.offsetTop + step < this.map.maxHeight - cursorSize) {
+                            cursor.style.top = (cursor.offsetTop + step) + 'px';
+                        } else {
+                            cursor.style.top = this.map.maxHeight - cursorSize;
+                        }
                     } else if (event.key === 'a') {
-                        cursor.style.left = (cursor.offsetLeft - 30) + 'px';
+                        if (cursor.offsetLeft - step > 0) {
+                            cursor.style.left = (cursor.offsetLeft - step) + 'px';
+                        } else {
+                            cursor.style.left = '0px';
+                        }
                     } else if (event.key === ' ') {
                         this.shoot()
                     }
@@ -170,6 +188,7 @@ class Map {
     constructor() {
         this.hidden = 300;
         this.maxWidth = 600;
+        this.maxHeight = 400;
         scoreIndicator.style.width = `${this.hidden}px`;
     }
 
