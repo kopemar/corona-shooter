@@ -29,41 +29,42 @@ class Game {
                 }
             );
 
-            const keyDownListener = {
+            this.keyDownListener = {
                 handleEvent: (event) => {
-                    const step = 30;
-                    const cursorSize = 56;
-                    if (event.key === 'd') {
-                        if (cursor.offsetLeft + step < this.map.maxWidth - cursorSize) {
-                            cursor.style.left = (cursor.offsetLeft + step) + 'px';
-                        } else {
-                            cursor.style.left = this.map.maxWidth - cursorSize
+                    if (!this.player.mouse) {
+                        const step = 30;
+                        const cursorSize = 56;
+                        if (event.key === 'd') {
+                            if (cursor.offsetLeft + step < this.map.maxWidth - cursorSize) {
+                                cursor.style.left = (cursor.offsetLeft + step) + 'px';
+                            } else {
+                                cursor.style.left = this.map.maxWidth - cursorSize
+                            }
+                        } else if (event.key === 'w') {
+                            if (cursor.offsetTop - step > 0) {
+                                cursor.style.top = (cursor.offsetTop - step) + 'px';
+                            } else {
+                                cursor.style.top = '0px'
+                            }
+                        } else if (event.key === 's') {
+                            if (cursor.offsetTop + step < this.map.maxHeight - cursorSize) {
+                                cursor.style.top = (cursor.offsetTop + step) + 'px';
+                            } else {
+                                cursor.style.top = this.map.maxHeight - cursorSize;
+                            }
+                        } else if (event.key === 'a') {
+                            if (cursor.offsetLeft - step > 0) {
+                                cursor.style.left = (cursor.offsetLeft - step) + 'px';
+                            } else {
+                                cursor.style.left = '0px';
+                            }
+                        } else if (event.key === ' ') {
+                            this.shoot()
                         }
-                    } else if (event.key === 'w') {
-                        if (cursor.offsetTop - step > 0) {
-                            cursor.style.top = (cursor.offsetTop - step) + 'px';
-                        } else {
-                            cursor.style.top = '0px'
-                        }
-                    } else if (event.key === 's') {
-                        if (cursor.offsetTop + step < this.map.maxHeight - cursorSize) {
-                            cursor.style.top = (cursor.offsetTop + step) + 'px';
-                        } else {
-                            cursor.style.top = this.map.maxHeight - cursorSize;
-                        }
-                    } else if (event.key === 'a') {
-                        if (cursor.offsetLeft - step > 0) {
-                            cursor.style.left = (cursor.offsetLeft - step) + 'px';
-                        } else {
-                            cursor.style.left = '0px';
-                        }
-                    } else if (event.key === ' ') {
-                        this.shoot()
                     }
                 }
             };
-
-            window.addEventListener('keydown', keyDownListener, false)
+            window.addEventListener('keydown', this.keyDownListener, true);
         } else {
             cursor.style.visibility = 'hidden';
             document.querySelectorAll('.playground_elements').forEach((elem) => {
@@ -99,6 +100,7 @@ class Game {
             console.error(e);
         }
 
+        window.removeEventListener('keydown', this.keyDownListener, true);
         clearTimeout(this.newVirusTimeout);
         clearTimeout(this.timeout);
         clearInterval(this.interval);
@@ -228,7 +230,7 @@ function getImage() {
 
 
 let game;
-getImage()
+getImage();
 newGameButton.addEventListener('click', (event) => {
     if (game != null) {
         game.stop();
