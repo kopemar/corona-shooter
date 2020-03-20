@@ -1,9 +1,9 @@
 .playground_elements {
+    cursor: url("asset/target.png") 26 26, default;
     height: 400px;
 }
 
 #playground {
-    cursor: url("asset/target.png") default;
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -11,7 +11,7 @@
     background: url("asset/world.png");
 }
 
-#game_over_box {
+#game_over_box, #you_won_box {
     visibility: collapse;
     position: absolute;
     top: 40%;
@@ -22,13 +22,29 @@
     color: #ffffff;
     text-align: center;
     border: solid 2px white;
+
+}
+
+#game_over_box {
     background: #d21f43;
 }
 
+#you_won_box {
+    background: #8fd28f;
+}
+
 #score_indicator {
+    position: absolute;
     width: 300px;
     opacity: 0.5;
     background: #ff5d67;
+}
+#cursor {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    z-index: 1;
+    background: url("asset/target.png");
 }
 
 .virus {

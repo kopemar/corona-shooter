@@ -7,13 +7,13 @@
 </head>
 <body>
 <menu>
-    <form>
+    <form name="form">
         <input type="button" id="new_game" value="New Game">
         <input type="button" id="restart" value="Restart">
         <label for="keyboard_radio">Keyboard</label>
-        <input type="radio" id="keyboard_radio" name="input_type_radio">
+        <input type="radio" id="keyboard_radio" name="input_type_radio" value="keyboard">
         <label for="mouse_radio">Mouse</label>
-        <input type="radio" id="mouse_radio" name="input_type_radio">
+        <input type="radio" id="mouse_radio" name="input_type_radio" value="mouse">
     </form>
 </menu>
 <article>
@@ -24,10 +24,11 @@
 </article>
 
 <div id="playground" class="playground_elements">
-
     <div id="score_indicator" class="playground_elements"></div>
     <div id="game_over_box">You were not good enough to save the world!</div>
+    <div id="you_won_box">You saved the world!</div>
 </div>
+
 <script src="game.js"></script>
 </body>
 </html>
