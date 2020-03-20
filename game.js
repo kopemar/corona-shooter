@@ -193,8 +193,23 @@ class Map {
     }
 }
 
-let game;
 
+async function waitForImage() {
+    return new Promise((resolve) => {
+        playground.style.background = 'url("asset/world.png")';
+        resolve();
+    })
+}
+
+function getImage() {
+    waitForImage().then(() => {
+        alert("Game is ready!");
+    })
+}
+
+
+let game;
+getImage()
 newGameButton.addEventListener('click', (event) => {
     if (game != null) {
         game.stop();
